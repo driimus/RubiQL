@@ -10,7 +10,7 @@ class Cube:
 		self.faces = []
 		self.generate()
 		print("Initialised a solved %s cube." %(3*("x%s" %(sideLength)))[1:])
-		self.display()
+		self.niceDisplay()
 	
 	def generate(self):
 		for face in range(self.sides):
@@ -31,14 +31,24 @@ class Cube:
 	
 	def solve(self):
 		pass
-	
-	def display(self):
-		for face in self.faces:
-			for line in face:
+				
+	def display(self,faces):
+		print("")
+		
+		for line in range(self.sideLength):
+			for face in faces: #loop all the sides
 				print(" ",end="")
-				for tile in line:
+				for tile in face[line]:
 					colorPrint("  ",tile)
 					print(" ",end="")
-				print("\n")
-			print("")
+				print("  ",end="")
+			print("\n")
+	
+	
+	def niceDisplay(self):		
+		self.display(self.faces[0:1])
+		self.display(self.faces[1:-1])
+		self.display(self.faces[-1:])
+		print("\n")
+		
 rubik = Cube(3)
