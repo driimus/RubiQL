@@ -23,6 +23,7 @@ class Cube:
 				evens.append(i)
 				
 	def __generate__(self):
+		self.faces.clear()
 		for face in range(self.sides):
 # 			color for that respective solved face
 			color = Cube.colors[face]
@@ -40,7 +41,7 @@ class Cube:
 		pass
 	
 	def solve(self):
-		pass
+		self.__generate__()
 				
 	def display(self,faces):
 		print("")
@@ -65,7 +66,6 @@ class Cube:
 		self.faces[faceIndex+1][line] = self.faces[faceIndex+2][line]
 		self.faces[faceIndex+2][line] = self.faces[faceIndex+3][line]
 		self.faces[faceIndex+3][line] = start
-		print("Moved middle section 90 degrees.")
 		
 	def __reverseSpinYline__(self,faceIndex,topIndex,line):
 		start = self.faces[faceIndex+3][line].copy()
@@ -132,15 +132,15 @@ class Cube:
 		self.faces.insert(lastIndex,self.faces.pop(firstIndex))
 # 		self.niceDisplay()
 		
-	def rotateZaxis(self,topIndex=3,bottomIndex=1,reverse=False):
-		self.__spinEnds__(topIndex,bottomIndex)
+	def rotateZaxis(self,topIndex=1,bottomIndex=3,reverse=False):
+# 		self.__spinEnds__(topIndex,bottomIndex)
 		self.counterRotateYaxis()
-		time.sleep(1)
+# 		time.sleep(1)
 		if not reverse:
 			self.rotateXaxis()
 		else:
 			self.counterRotateXaxis()
-		time.sleep(1)
+# 		time.sleep(1)
 		
 		self.rotateYaxis()
 		
@@ -193,7 +193,14 @@ class Cube:
 			
 		self.counterRotateZaxis()
 
-		
+	def moveF(self,reverse=False):
+		self.rotateXaxis()
+		if not reverse:
+			self.moveU()
+		else:
+			self.revU()
+		self.counterRotateXaxis()
+	
 	def revU(self,faceIndex=1,topIndex=0,line=0):
 		self.__reverseSpinYline__(faceIndex,topIndex,line)
 		self.__counterRotateFace__(topIndex)
@@ -213,6 +220,9 @@ class Cube:
 	
 	def revL(self):
 		self.moveL(True)
+		
+	def revF(self):
+		self.moveF(True)
 
 
 if __name__ == "__main__":
@@ -253,6 +263,12 @@ if __name__ == "__main__":
 			rubik.moveL()
 		if msg=="L'":
 			rubik.revL()
+		if msg=="F":
+			rubik.moveF()
+		if msg=="F'":
+			rubik.revF()
+		if msg=="solve":
+			rubik.solve()
 		rubik.niceDisplay()
 		msg = input("move:")
 		
