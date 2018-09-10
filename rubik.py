@@ -104,8 +104,10 @@ class Cube:
 # '''
 # 	CLOCKWISE ROTATIONS
 	def __spinEnds__(self,topIndex,bottomIndex):
-		self.__rotateFace__(topIndex)
-		self.__counterRotateFace__(bottomIndex)
+		'''function takes as input indedex of the faces found at 
+		the edges of an axis and spins them'''
+		self.__rotateFace__(topIndex) #top spins clockwise
+		self.__counterRotateFace__(bottomIndex) #bottom spins counterclockwise
 	
 	def faceSwap(self,iList=[],reverse=False):
 		if reverse:
@@ -125,22 +127,19 @@ class Cube:
 		
 		self.faceSwap(f,r)
 		
-# 		self.niceDisplay()
+
 	
 	def rotateYaxis(self,topIndex=0,bottomIndex=5,lastIndex=4,firstIndex=1):
 		self.__spinEnds__(topIndex,bottomIndex)
 		self.faces.insert(lastIndex,self.faces.pop(firstIndex))
-# 		self.niceDisplay()
+
 		
 	def rotateZaxis(self,topIndex=1,bottomIndex=3,reverse=False):
-# 		self.__spinEnds__(topIndex,bottomIndex)
 		self.counterRotateYaxis()
-# 		time.sleep(1)
 		if not reverse:
 			self.rotateXaxis()
 		else:
 			self.counterRotateXaxis()
-# 		time.sleep(1)
 		
 		self.rotateYaxis()
 		
