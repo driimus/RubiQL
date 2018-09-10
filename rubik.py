@@ -1,5 +1,6 @@
 from color import cprint as colorPrint
 import time
+from random import randrange
 class Cube:
 	
 	colors = ('w','r','g','o','b','y',)
@@ -21,7 +22,50 @@ class Cube:
 				odds.append(i)
 			else:
 				evens.append(i)
-				
+	
+	def handleInput(self,msg):
+		if msg=="X":
+			self.rotateXaxis()
+		if msg=="X'":
+			self.counterRotateXaxis()
+		if msg=="Y":
+			self.rotateYaxis()
+		if msg=="Y'":
+			self.counterRotateYaxis()
+		if msg=="Z":
+			self.rotateZaxis()
+		if msg=="Z'":
+			self.counterRotateZaxis()
+			
+		if msg=="U":
+			self.moveU()
+		if msg=="U'":
+			self.revU()
+		if msg=="M":
+			self.moveM()
+		if msg=="M'":
+			self.revM()
+		if msg=="D":
+			self.moveD()
+		if msg=="D'":
+			self.revD()
+		if msg=="R":
+			self.moveR()
+		if msg=="R'":
+			self.revR()
+		if msg=="L":
+			self.moveL()
+		if msg=="L'":
+			self.revL()
+		if msg=="F":
+			self.moveF()
+		if msg=="F'":
+			self.revF()
+		if msg=="solve":
+			self.solve()
+		if msg=="scramble":
+			self.scramble()
+
 	def __generate__(self):
 		self.faces.clear()
 		for face in range(self.sides):
@@ -35,11 +79,13 @@ class Cube:
 					lineList.append(color)
 				faceList.append(lineList)
 			self.faces.append(faceList)
+			
+	def scramble(self,moveCount=10):
+		moveset = ["R","U","L","D","F","B"]
+		for count in range(moveCount):
+			move = moveset[randrange(len(moveset))]
+			self.handleInput(move)
 		
-		
-	def scramble(self):
-		pass
-	
 	def solve(self):
 		self.__generate__()
 				
@@ -162,16 +208,13 @@ class Cube:
 	def moveU(self,faceIndex=1,topIndex=0,line=0):
 		self.__spinYline__(faceIndex,topIndex,line)
 		self.__rotateFace__(topIndex)
-# 		self.niceDisplay()
 		
 	def moveM(self,faceIndex=1,topIndex=0,line=1):
 		self.__spinYline__(faceIndex,topIndex,line)
-# 		self.niceDisplay()
 		
 	def moveD(self,faceIndex=1,bottomIndex=5,line=2):
 		self.__spinYline__(faceIndex,bottomIndex,line)
 		self.__counterRotateFace__(bottomIndex)
-# 		self.niceDisplay()
 		
 	def moveR(self,reverse=False,faceIndex=1,bottomIndex=5,line=2):
 		self.counterRotateZaxis()
@@ -180,17 +223,19 @@ class Cube:
 		else:
 			self.moveU()
 		self.rotateZaxis()
-# 		self.niceDisplay()
 		
 	def moveL(self,reverse=False):
-		self.rotateZaxis()
+		self.rotateYaxis()
+		self.rotateYaxis()
 		
 		if not reverse:
-			self.moveU()
+			self.moveR()
 		else:
-			self.revU()
+			self.revR()
 			
-		self.counterRotateZaxis()
+		self.rotateYaxis()
+		self.rotateYaxis()
+
 
 	def moveF(self,reverse=False):
 		self.rotateXaxis()
@@ -203,16 +248,13 @@ class Cube:
 	def revU(self,faceIndex=1,topIndex=0,line=0):
 		self.__reverseSpinYline__(faceIndex,topIndex,line)
 		self.__counterRotateFace__(topIndex)
-# 		self.niceDisplay()
 		
 	def revM(self,faceIndex=1,topIndex=0,line=1):
 		self.__reverseSpinYline__(faceIndex,topIndex,line)
-# 		self.niceDisplay()
 
 	def revD(self,faceIndex=1,bottomIndex=5,line=2):
 		self.__reverseSpinYline__(faceIndex,bottomIndex,line)
 		self.__rotateFace__(bottomIndex)
-# 		self.niceDisplay()
 
 	def revR(self):
 		self.moveR(True)
@@ -227,48 +269,10 @@ class Cube:
 if __name__ == "__main__":
 	rubik = Cube(3)
 
-	msg = input("move:")
-	while msg:
-		if msg=="X":
-			rubik.rotateXaxis()
-		if msg=="X'":
-			rubik.counterRotateXaxis()
-		if msg=="Y":
-			rubik.rotateYaxis()
-		if msg=="Y'":
-			rubik.counterRotateYaxis()
-		if msg=="Z":
-			rubik.rotateZaxis()
-		if msg=="Z'":
-			rubik.counterRotateZaxis()
-			
-		if msg=="U":
-			rubik.moveU()
-		if msg=="U'":
-			rubik.revU()
-		if msg=="M":
-			rubik.moveM()
-		if msg=="M'":
-			rubik.revM()
-		if msg=="D":
-			rubik.moveD()
-		if msg=="D'":
-			rubik.revD()
-		if msg=="R":
-			rubik.moveR()
-		if msg=="R'":
-			rubik.revR()
-		if msg=="L":
-			rubik.moveL()
-		if msg=="L'":
-			rubik.revL()
-		if msg=="F":
-			rubik.moveF()
-		if msg=="F'":
-			rubik.revF()
-		if msg=="solve":
-			rubik.solve()
+	move = input("move:")
+	while move:
+		rubik.handleInput(move)
 		rubik.niceDisplay()
-		msg = input("move:")
+		move = input("move:")
 		
 		
