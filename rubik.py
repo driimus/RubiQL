@@ -12,6 +12,7 @@ class Cube:
 		self.indexes = [i for i in range(sides)]
 		self.evens = []
 		self.odds = []
+		self.moves = []
 		self.__generate__()
 		print("Initialised a solved %s cube." %(3*("x%s" %(sideLength)))[1:])
 		self.niceDisplay()
@@ -79,15 +80,37 @@ class Cube:
 					lineList.append(color)
 				faceList.append(lineList)
 			self.faces.append(faceList)
-			
+	
+	def addMove(self,move):
+		move+="'"
+		self.moves.append(move)
+
+
 	def scramble(self,moveCount=10):
 		moveset = ["R","U","L","D","F","B"]
 		for count in range(moveCount):
 			move = moveset[randrange(len(moveset))]
+			self.addMove(move)
 			self.handleInput(move)
+			time.sleep(0.5)
+			self.niceDisplay()
 		
-	def solve(self):
+		print("Scrambled the cube %s times" %(moveCount))
+		
+	def new(self):
 		self.__generate__()
+
+	def isSolved(self):
+		return all(x == self.moves[0] for x in self.moves)
+
+	def solve(self):
+		self.moves.reverse()
+		for move in self.moves:
+			self.handleInput(move)
+			time.sleep(randrange(3))
+			print("Found move %s ... " %move)
+			self.niceDisplay()
+		print("All the faces are now solved")
 				
 	def display(self,faces):
 		print("")
