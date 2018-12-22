@@ -1,4 +1,4 @@
-from color import cprint as colorPrint
+from gym_rubik.envs.color import cprint as colorPrint
 import time
 from random import randrange
 class Cube:
@@ -93,7 +93,7 @@ class Cube:
 			self.addMove(move)
 			self.handleInput(move)
 			time.sleep(0.5)
-			self.niceDisplay()
+# 			self.niceDisplay()
 		
 		print("Scrambled the cube %s times" %(moveCount))
 		
